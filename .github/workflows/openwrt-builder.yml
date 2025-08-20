@@ -149,21 +149,26 @@ jobs:
         [ ${UPLOAD_GOFILE} = true && ${{ steps.gofile.outputs.url }} ] && echo "🔗 [GoFile](${{ steps.gofile.outputs.url }})" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
+    - name: 将固件上传到release历史
+      uses: softprops/action-gh-release@v2
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      id: upload-history
+      with:
+        name: 固件保留目录
+        tag_name: history
+        files: ${{ env.FIRMWARE }}/*sysupgrade.itb
+
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@v2.1.0
+      uses: softprops/action-gh-release@v2
 #      uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      id: upload-release
       with:
-        files: ${{ env.FIRMWARE }}/*
         name: OpenWrt_firmware_${{ env.REPO_BRANCH }}${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
-#        tag_name: ${{ steps.tag.outputs.release_tag }}
-#        body_path: release.txt
-#        files: ${{ env.FIRMWARE }}/*
-
+        files: ${{ env.FIRMWARE }}/*
+        
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
