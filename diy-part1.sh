@@ -16,3 +16,12 @@
 # Add a feed source
 #echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+# 自定义软件源
+git clone --depth 1 -b main https://github.com/QiYueYiya/openwrt-packages package/openwrt-packages
+# Mosdns
+find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
+find ./ | grep Makefile | grep mosdns | xargs rm -f
+git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/package-mosdns
+git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+# Easytier
+git clone --depth 1 -b main https://github.com/EasyTier/luci-app-easytier.git package/package-easytier
