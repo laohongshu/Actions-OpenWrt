@@ -153,6 +153,8 @@ jobs:
       uses: softprops/action-gh-release@v2
       if: steps.tag.outputs.status == 'success' && !cancelled()
       id: upload-history
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: 固件保留目录
         tag_name: history
@@ -163,6 +165,8 @@ jobs:
 #      uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()
       id: upload-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: OpenWrt_firmware_${{ env.REPO_BRANCH }}${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         tag_name: ${{ steps.tag.outputs.release_tag }}
