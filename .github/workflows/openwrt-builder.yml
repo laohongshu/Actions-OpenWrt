@@ -15,6 +15,7 @@ name: OpenWrt Builder
 on:
   repository_dispatch:
   workflow_dispatch:
+    inputs:
       LAN_IP:
         description: 'Set LAN IP Address'
         required: true
